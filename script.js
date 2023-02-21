@@ -1,44 +1,52 @@
 const quizData = [
     {
-        question: "Which language runs in a web browser?",
-        a: "Java",
-        b: "C",
-        c: "Python",
-        d: "javascript",
-        correct: "d",
+        question: "What does HTML stand for?",
+        ans1: "Hypertext Markup Language",
+        ans2: "Hypertext Markdown Language",
+        ans3: "Hyperloop Machine Language",
+        ans4: "Helicopters Terminals Motorboats Lamborginis",
+        correct: "ans1",
+    },
+    {
+        question: "Correct syntax of doctype in HTML5 is",
+        ans1: "</DOCTYPE HTML>",
+        ans2: "<DOCTYPE HTML>",
+        ans3: "<DOCTYPE HTML!",
+        ans4: "<!DOCTYPE HTML>",
+        correct: "ans4",
     },
     {
         question: "What does CSS stand for?",
-        a: "Central Style Sheets",
-        b: "Cascading Style Sheets",
-        c: "Cascading Simple Sheets",
-        d: "Cars SUVs Sailboats",
-        correct: "b",
+        ans1: "Central Style Sheets",
+        ans2: "Cascading Style Sheets",
+        ans3: "Cascading Simple Sheets",
+        ans4: "Cars SUVs Sailboats",
+        correct: "ans2",
     },
     {
-        question: "What does HTML stand for?",
-        a: "Hypertext Markup Language",
-        b: "Hypertext Markdown Language",
-        c: "Hyperloop Machine Language",
-        d: "Helicopters Terminals Motorboats Lamborginis",
-        correct: "a",
+        question: "How can we write comments in CSS?",
+        ans1: "/* */",
+        ans2: "//",
+        ans3: "#",
+        ans4: "All of the above",
+        correct: "ans1",
     },
     {
         question: "What year was JavaScript launched?",
-        a: "1996",
-        b: "1995",
-        c: "1994",
-        d: "none of the above",
-        correct: "b",
+        ans1: "1996",
+        ans2: "1995",
+        ans3: "1994",
+        ans4: "none of the above",
+        correct: "ans2",
     },
 ];
 const quiz= document.getElementById('quiz')
-const answerEls = document.querySelectorAll('.answer')
+const ansEls = document.querySelectorAll('.ans')
 const questionEl = document.getElementById('question')
-const a_text = document.getElementById('a_text')
-const b_text = document.getElementById('b_text')
-const c_text = document.getElementById('c_text')
-const d_text = document.getElementById('d_text')
+const opt1 = document.getElementById('opt1')
+const opt2 = document.getElementById('opt2')
+const opt3 = document.getElementById('opt3')
+const opt4 = document.getElementById('opt4')
 const submitBtn = document.getElementById('submit')
 let currentQuiz = 0
 let score = 0
@@ -47,20 +55,37 @@ function loadQuiz() {
     deselectAnswers()
     const currentQuizData = quizData[currentQuiz]
     questionEl.innerText = currentQuizData.question
-    a_text.innerText = currentQuizData.a
-    b_text.innerText = currentQuizData.b
-    c_text.innerText = currentQuizData.c
-    d_text.innerText = currentQuizData.d
+    opt1.innerText = currentQuizData.ans1
+    opt2.innerText = currentQuizData.ans2
+    opt3.innerText = currentQuizData.ans3
+    opt4.innerText = currentQuizData.ans4
 }
 function deselectAnswers() {
-    answerEls.forEach(answerEl => answerEl.checked = false)
+    ansEls.forEach(ansEl => ansEl.checked = false)
 }
 function getSelected() {
-    let answer
-    answerEls.forEach(answerEl => {
-        if(answerEl.checked) {
-            answer = answerEl.id
+    let ans
+    ansEls.forEach(ansEl => {
+        if(ansEl.checked) {
+            ans = ansEl.id
         }
     })
-    return answer
+    return ans
 }
+submitBtn.addEventListener('click', () => {
+    const ans = getSelected()
+    if(ans) {
+       if(ans == quizData[currentQuiz].correct) {
+           score++
+       }
+       currentQuiz++
+       if(currentQuiz < quizData.length) {
+           loadQuiz()
+       } else {
+           quiz.innerHTML = `
+           <h2>You answered ${score}/${quizData.length} questions correctly</h2>
+           <button onclick="location.reload()">RELOAD</button>
+           `
+       }
+    }
+})
